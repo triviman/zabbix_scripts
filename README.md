@@ -80,15 +80,15 @@ zbxwmi SVR1 Name Name,Size,FreeSpace "Win32_LogicalDisk" -f "MediaType = 12" -D 
 ```
 
 A sample template to monitor Windows services is provided. Don't forget to use a secure Windows account to query your hosts (a domain admin will work but it's not recommended). You can add the credentials into the script if you don't want to display them into the Zabbix frontend.
-UPDATE:
+### UPDATE:
 use new files:
 
 create a new template an create a new discovery rule:
-
+```
 Name:volumes
 type: external check
 Key: wmi_volumes.sh[{HOST.HOST}]
-
+```
 create into discovery a two new Items Prototype:
 
 item 1:
