@@ -15,6 +15,7 @@ import logging
 import wmi_client_wrapper as wmi
 from zsend import ZSend
 from docopt import docopt
+import dns.resolver #import the module install with easy_install easy_install dnspython
 
 class NullDevice():
     def write(self, s):
@@ -81,6 +82,10 @@ Options:
   items = args['<items>'].split(',') if args['<items>'] else args['<item>'].split(',')
   cls = args['<class>']
   filter = args['--filter']
+  myResolver = dns.resolver.Resolver() #bug, with dns not work for me, i add resolver tp ip and work.
+  myAnswers = myResolver.query(args['<host>'], "A")
+  for rdata in myAnswers:
+        hostip = rdata
 
   if (args['get'] and len(items) <> 1):
     logging.error("action 'get' requires only one item")
@@ -96,7 +101,7 @@ Options:
   wmic = wmi.WmiClientWrapper(
     "%s\%s" % (domain, username),
     password,
-    host,
+    hostip, #change host by hostip
   )
   try:
     result = wmic.query(query)
